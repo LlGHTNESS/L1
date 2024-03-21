@@ -1,16 +1,27 @@
 package main
 
+/*Дана последовательность температурных колебаний: -25.4, -27.0 13.0, 19.0, 15.5, 24.5, -21.0, 32.5.
+Объединить данные значения в группы с шагом в 10 градусов. Последовательность в подмножноствах не важна.
+
+
+Пример: -20:{-25.0, -27.0, -21.0}, 10:{13.0, 19.0, 15.5}, 20: {24.5}, etc.*/
+
 import (
 	"fmt"
 )
 
 func main() {
+	// Создание массива с плавающей точкой для группировки по диапазонам температур.
 	array := []float64{-25.4, -27.0, 13.0, 19.0, 15.5, 24.5, -21.0, 32.5}
+
+	// Инициализация карты для группировки температур по диапазонам.
 	groups := make(map[int][]float64)
+
+	// Вызов функции grouping для классификации температур.
 	new := grouping(groups, array)
 
+	// Перебор всех групп температур и печать каждой группы и ее температур.
 	for key, value := range new {
-
 		fmt.Printf("%d: [", key)
 		for _, t := range value {
 			fmt.Printf("%f, ", t)
@@ -18,10 +29,13 @@ func main() {
 		fmt.Printf("]\n")
 	}
 }
+
+// Функция grouping классифицирует температуры в array по диапазонам, используя groups для их хранения.
 func grouping(groups map[int][]float64, array []float64) map[int][]float64 {
+	// Перебор каждого значения температуры в массиве.
 	for _, temperature := range array {
-		group := (int(temperature) - (int(temperature) % 10))
-		groups[group] = append(groups[group], temperature)
+		group := (int(temperature) - (int(temperature) % 10)) // Определение диапазона для группировки.
+		groups[group] = append(groups[group], temperature)    // Добавление температуры в соответствующую группу.
 	}
-	return groups
+	return groups // Возвращение карты с сгруппированными температурами.
 }
